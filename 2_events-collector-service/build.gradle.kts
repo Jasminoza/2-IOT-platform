@@ -1,5 +1,6 @@
 val appVersion: String by project
 val javaVersion: String by project
+val lombokVersion: String by project
 
 plugins {
   java
@@ -8,7 +9,7 @@ plugins {
 }
 
 group = "org.yolkin"
-version = "$appVersion"
+version = appVersion
 
 java {
   toolchain {
@@ -18,21 +19,33 @@ java {
 
 repositories {
   mavenCentral()
-  maven {
-    url = uri("https://packages.confluent.io/maven/")
-  }
 }
 
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web")
+  implementation("org.springframework.kafka:spring-kafka")
+
+  implementation("org.projectlombok:lombok:$lombokVersion")
+
+  compileOnly("org.projectlombok:lombok:$lombokVersion")
+
+  annotationProcessor(
+    "org.projectlombok:lombok:$lombokVersion",
+  )
 
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
   }
+
+  testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
+
+  testAnnotationProcessor(
+    "org.projectlombok:lombok:$lombokVersion",
+  )
 }
 
 tasks.test {
-  useJUnitPlatform()  // ← Обязательно для JUnit 5!
+  useJUnitPlatform()
   testLogging {
     events("passed", "skipped", "failed")
   }
