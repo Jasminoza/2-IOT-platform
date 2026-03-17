@@ -8,11 +8,9 @@ kafka:
   kafkaTopicList:
     - name: "RawEvents"
       groupId: "events-collector-group"
-      containerFactory: "kafkaListenerContainerFactory"
       partitions-count: 1
       replicas-count: 1
     - name: "ProcessedEvents"
       groupId: "events-collector-group"
-      containerFactory: "kafkaListenerContainerFactory"
       partitions-count: 1
       replicas-count: 1
