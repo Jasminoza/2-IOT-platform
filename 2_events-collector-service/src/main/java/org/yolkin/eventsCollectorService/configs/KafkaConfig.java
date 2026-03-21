@@ -11,8 +11,6 @@ import org.springframework.kafka.annotation.EnableKafka;
 @ConfigurationProperties(prefix = "kafka")
 public class KafkaConfig {
 
-    private String bootstrapServers;
-    private String schemaRegistryUrl;
     List<KafkaTopic> kafkaTopicList;
 
     @Data

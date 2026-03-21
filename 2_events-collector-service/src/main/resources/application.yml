@@ -5,8 +5,6 @@ spring:
     bootstrapServers: "PLAINTEXT://kafka-1:9092"
 
 kafka:
-  bootstrapServers: "not-setted"
-  schemaRegistryUrl: "not-setted"
   kafkaTopicList:
     - name: "RawEvents"
       groupId: "events-collector-group"
