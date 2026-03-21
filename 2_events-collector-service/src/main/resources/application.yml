@@ -1,6 +1,8 @@
 spring:
   application:
     name: "2-events-collector-service"
+  kafka:
+    bootstrapServers: "PLAINTEXT://kafka-1:9092"
 
 kafka:
   bootstrapServers: "not-setted"
