@@ -49,6 +49,11 @@ services:
     depends_on:
       kafka-1:
         condition: service_healthy
+    healthcheck:
+      test: curl --output /dev/null --silent --head --fail http://localhost:8081/subjects
+      interval: 30s
+      timeout: 10s
+      retries: 3
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-1:9092
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
@@ -61,6 +66,26 @@ services:
       - ./schema-registry-data:/bitnami
     networks:
       - kafka-network
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.7.2
+    restart: on-failure
+    hostname: kafka-ui
+    container_name: kafka-ui
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+    ports:
+      - "8095:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: iot
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-1:9092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
+    networks:
+      - kafka-network
+
 
 networks:
   kafka-network:
